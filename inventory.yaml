@@ -1,0 +1,13 @@
+---
+all: 
+  hosts: 
+  children:
+    dev:
+      hosts:
+        webserver:
+          ansible_host: # add private ip of webserver
+
+    db:
+      hosts:
+        database:
+          ansible_host: # add private ip of database
