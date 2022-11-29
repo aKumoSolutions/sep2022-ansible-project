@@ -1,0 +1,34 @@
+---
+- name: Add ansible user
+  hosts: all
+  gather_facts: yes
+  tasks: 
+    - name: Add ansible user to webserver
+      when:
+        - ansible_facts['distribution'] == "CentOS"
+        - ansible_facts['distribution_major_version'] == "8" 
+      user:
+        name: ansible
+        groups: wheel
+        append: yes
+        state: present
+        createhome: yes
+        shell: /bin/bash
+    
+    - name: Add ansible user to database
+      when:
+        - ansible_facts['distribution'] == "Ubuntu"
+        - ansible_facts['distribution_major_version'] == "20" 
+      user:
+        name: ansible
+        groups: sudo
+        append: yes
+        state: present
+        createhome: yes
+        shell: /bin/bash
+
+    - name: Copy Public Key
+      authorized_key:
+        user: ansible
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}" # ability to look up the SSH key
