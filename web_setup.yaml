@@ -1,0 +1,15 @@
+---
+- name: Setup WordPress
+  hosts: webserver
+  gather_facts: true
+  tasks:
+    - name: Install and Start Apache
+      dnf:
+        name: httpd
+        state: latest
+    
+    - name: Start Apache
+      systemd:
+        name: httpd
+        state: started
+        enabled: yes
